@@ -32,6 +32,7 @@ export default function DashboardClient({user, groups}:{user:any; groups:any[]})
       <header className="flex justify-between items-center">
         <b className="text-emerald-600 text-xl">SplitBudget</b>
         <div className="flex items-center gap-2">
+          <Link href="/profile" className="text-sm border rounded-full px-3 py-1.5 bg-white">Profil</Link>
           <span className="text-sm text-zinc-600 hidden sm:block">{user.email}</span>
           <button onClick={logout} className="text-sm border rounded-full px-3 py-1.5">Keluar</button>
         </div>
