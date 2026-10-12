@@ -9,9 +9,9 @@ export default function Register(){
   const router=useRouter(); const supabase=createClient();
   async function onReg(e:React.FormEvent){
     e.preventDefault(); setLoading(true); setErr(""); setMsg("");
-    const {error}=await supabase.auth.signUp({email,password, options:{data:{name}}});
+    const {error}=await supabase.auth.signUp({email,password, options:{data:{name}, emailRedirectTo: `${location.origin}/auth/callback`}});
     setLoading(false);
-    if(error) setErr(error.message); else { setMsg("Cek email untuk verifikasi. Atau langsung login jika verifikasi nonaktif."); setTimeout(()=>router.push("/login"),1500); }
+    if(error) setErr(error.message); else router.push(`/auth/confirm?email=${encodeURIComponent(email)}`);
   }
   async function onGoogle(){ const {error}=await supabase.auth.signInWithOAuth({provider:"google", options:{redirectTo:`${location.origin}/auth/callback`}}); if(error) setErr(error.message); }
   return (
