@@ -44,7 +44,7 @@ function LoginInner(){
           </label>
           {err && <p className="pbfx-err">{err} {/confirm|verif/i.test(err) ? <button type="button" onClick={resend} className="underline font-medium">kirim ulang email</button> : null}</p>}
           <button disabled={loading} className="pbfx-btn">{loading?"Memproses...":"Login"}</button>
-          <Link href="/login" className="pbfx-lost">Lost password?</Link>
+          <Link href="/forgot-password" className="pbfx-lost">Lost password?</Link>
           <p className="pbfx-signup">Not registered yet? <Link href="/register">Signup here</Link></p>
         </form>
       </main>
