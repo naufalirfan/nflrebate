@@ -4,6 +4,18 @@
 
 **Live:** https://nflrebate.vercel.app · **Repo:** `naufalirfan/nflrebate` · **Stack:** Next.js 16 App Router + Supabase (Postgres + Auth + RLS) + Tailwind 4 + PWA
 
+## 📸 Screenshots
+
+| Landing — Light | Landing — Dark |
+|---|---|
+| ![Home Light](docs/screenshots/ss-home-light.png) | ![Home Dark](docs/screenshots/ss-home-dark.png) |
+
+| Login — Dark | Landing — Stats (Light) |
+|---|---|
+| ![Login Dark](docs/screenshots/ss-login-dark.png) | ![Home Stats Light](docs/screenshots/ss-home-light-bottom.png) |
+
+> Light `#f7f7f5` · Dark charcoal `#1e1e24 / #2a2a30` · Pastel `lime #dceeb1` · `lilac #c5b0f4` · `cream #f4ecd6` · `sky #c2e8ff`. Toggle 🌙/☀️ di header 56px.
+
 ---
 
 ## ✨ Fitur
