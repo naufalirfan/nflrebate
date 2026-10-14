@@ -3,30 +3,35 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ThemeToggle } from "@/components/ThemeToggle";
 export default function Register(){
-  const [name,setName]=useState(""); const [email,setEmail]=useState(""); const [password,setPassword]=useState(""); const [loading,setLoading]=useState(false); const [err,setErr]=useState(""); const [msg,setMsg]=useState("");
+  const [name,setName]=useState(""); const [email,setEmail]=useState(""); const [password,setPassword]=useState("");
+  const [show,setShow]=useState(false); const [loading,setLoading]=useState(false); const [err,setErr]=useState(""); const [msg,setMsg]=useState("");
   const router=useRouter(); const supabase=createClient();
   async function onReg(e:React.FormEvent){
     e.preventDefault(); setLoading(true); setErr(""); setMsg("");
-    const {error}=await supabase.auth.signUp({email,password, options:{data:{name}, emailRedirectTo: `${location.origin}/auth/callback`}});
+    const {error}=await supabase.auth.signUp({email:email.trim(),password, options:{data:{name: name.trim()}, emailRedirectTo: `${location.origin}/auth/callback`}});
     setLoading(false);
     if(error) setErr(error.message);
-    else { setMsg("Akun dibuat. Silakan cek email untuk verifikasi, lalu login."); setTimeout(()=>router.push("/login"), 1500); }
+    else { setMsg("Akun dibuat. Silakan login."); setTimeout(()=>router.push("/login"), 900); }
   }
   return (
-    <div className="flex-1 flex flex-col items-center justify-center p-4 bg-zinc-50 dark:bg-zinc-900 min-h-dvh">
-      <div className="absolute top-4 right-4"><ThemeToggle /></div>
-      <form onSubmit={onReg} className="w-full max-w-sm bg-white dark:bg-zinc-800 rounded-3xl p-6 border dark:border-zinc-700 shadow-sm flex flex-col gap-4">
-        <h1 className="text-2xl font-bold text-zinc-900 dark:text-white">Daftar Nfl Rebate</h1>
-        <input value={name} onChange={e=>setName(e.target.value)} placeholder="Nama" required className="w-full border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white placeholder:text-zinc-400 rounded-xl px-4 py-3 text-[16px]" />
-        <input value={email} onChange={e=>setEmail(e.target.value)} placeholder="Email" type="email" required className="w-full border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white placeholder:text-zinc-400 rounded-xl px-4 py-3 text-[16px]" />
-        <input value={password} onChange={e=>setPassword(e.target.value)} placeholder="Password (min 6)" type="password" required className="w-full border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white placeholder:text-zinc-400 rounded-xl px-4 py-3 text-[16px]" />
-        {err && <p className="text-sm text-red-600">{err}</p>}
-        {msg && <p className="text-sm text-emerald-600 dark:text-emerald-400">{msg}</p>}
-        <button disabled={loading} className="w-full bg-sky-600 text-white rounded-xl py-3 min-h-[44px] font-medium disabled:opacity-50">{loading?"Memproses...":"Daftar"}</button>
-        <p className="text-sm text-center text-zinc-600 dark:text-zinc-400">Sudah punya akun? <Link href="/login" className="text-sky-600 font-medium">Masuk</Link></p>
-      </form>
+    <div className="pbfx-wrap">
+      <header className="pbfx-header">
+        <Link href="/" className="pbfx-logo">NFL<span>REBATE</span></Link>
+        <nav className="pbfx-nav"><Link href="/login">Login</Link><Link href="/">Main Site</Link><span className="pbfx-lang">ID</span></nav>
+      </header>
+      <main className="pbfx-main">
+        <form onSubmit={onReg} className="pbfx-card">
+          <h2>Signup Form</h2>
+          <label className="pbfx-field"><input value={name} onChange={e=>setName(e.target.value)} placeholder="Full Name" required /></label>
+          <label className="pbfx-field"><span className="pbfx-ico">@</span><input value={email} onChange={e=>setEmail(e.target.value)} placeholder="Your E-Mail Address" type="email" required /></label>
+          <label className="pbfx-field"><span className="pbfx-ico">*</span><input value={password} onChange={e=>setPassword(e.target.value)} placeholder="Choose a Password" type={show?"text":"password"} required /><button type="button" onClick={()=>setShow(s=>!s)} className="pbfx-eye">{show?"Hide":"Show"}</button></label>
+          {err && <p className="pbfx-err">{err}</p>}
+          {msg && <p className="pbfx-err" style={{color:'#059669',background:'#ecfdf5',borderColor:'#a7f3d0'}}>{msg}</p>}
+          <button disabled={loading} className="pbfx-btn">{loading?"Memproses...":"Signup"}</button>
+          <p className="pbfx-signup">Sudah punya akun? <Link href="/login">Login here</Link></p>
+        </form>
+      </main>
     </div>
   )
 }
