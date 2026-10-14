@@ -5,11 +5,11 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 export const metadata: Metadata = {
-  title: "SplitBudget — Patungan Liburan",
-  description: "Catat patungan & bagi tagihan tanpa ribet",
+  title: "Nfl Rebate - Monitoring Rebate Forex",
+  description: "Portal rebate Exness, XM, dan Headway — pantau komisi lot anda real-time.",
   manifest: "/manifest.json",
 };
-export const viewport: Viewport = { themeColor: "#10b981" };
+export const viewport: Viewport = { themeColor: "#0ea5e9" };
 const themeScript = `try{var t=localStorage.getItem("theme");var m=window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";var r=t==="system"||!t?m:t;document.documentElement.classList.add(r)}catch(e){}`;
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

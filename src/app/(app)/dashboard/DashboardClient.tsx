@@ -1,75 +1,76 @@
 "use client";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ThemeToggle } from "@/components/ThemeToggle";
 
-function genCode(){ const c="ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; return Array.from({length:6},()=>c[Math.floor(Math.random()*c.length)]).join(""); }
+type Log = { id:string; ticket_id:string; symbol:string; volume_lots:number; close_time:string; broker_name:string|null; account_number:string|null; client_rebate:number; status:string; };
+type Bal = { available_balance:number; total_earned:number; total_withdrawn:number } | null;
 
-export default function DashboardClient({user, groups}:{user:any; groups:any[]}){
-  const [name,setName]=useState(""); const [joinCode,setJoinCode]=useState(""); const [loading,setLoading]=useState(false); const [msg,setMsg]=useState("");
+function csvEscape(s:string){ return `"${String(s).replace(/"/g,'""')}"`; }
+function toCsv(rows:Log[]){
+  const header=["close_time","broker","account_number","ticket_id","symbol","volume_lots","client_rebate","status"];
+  const lines=[header.join(",")];
+  for(const r of rows) lines.push([r.close_time,r.broker_name??"",r.account_number??"",r.ticket_id,r.symbol,String(r.volume_lots),String(r.client_rebate),r.status].map(csvEscape).join(","));
+  return lines.join("\n");
+}
+
+export default function DashboardClient({ user, initialBalance, initialLogs, accounts }:{ user:any; initialBalance:Bal; initialLogs:Log[]; accounts:{id:string;broker_name:string;account_number:string}[] }){
   const supabase=createClient(); const router=useRouter();
-  async function createGroup(e:React.FormEvent){
-    e.preventDefault(); if(!name.trim()) return; setLoading(true); setMsg("");
-    const code=genCode();
-    const { data, error } = await supabase.from("groups").insert({name: name.trim(), invite_code: code, created_by: user.id}).select().single();
-    if(error){ setMsg(error.message); setLoading(false); return; }
-    await supabase.from("group_members").insert({group_id: data.id, user_id: user.id});
-    setName(""); setLoading(false); router.refresh();
-  }
-  async function joinGroup(e:React.FormEvent){
-    e.preventDefault(); if(!joinCode.trim()) return; setLoading(true); setMsg("");
-    const code=joinCode.trim().toUpperCase();
-    const { data: g, error } = await supabase.from("groups").select("id").eq("invite_code", code).single();
-    if(error||!g){ setMsg("Kode tidak ditemukan"); setLoading(false); return; }
-    const { error: e2 } = await supabase.from("group_members").insert({group_id: g.id, user_id: user.id});
-    if(e2) setMsg(e2.message.includes("duplicate")? "Sudah jadi anggota": e2.message); else setJoinCode("");
-    setLoading(false); router.refresh();
+  const [logs]=useState<Log[]>(initialLogs);
+  const [fBroker,setFBroker]=useState(""); const [fAccount,setFAccount]=useState(""); const [fSymbol,setFSymbol]=useState(""); const [fFrom,setFFrom]=useState(""); const [fTo,setFTo]=useState("");
+  const filtered=useMemo(()=> logs.filter(r=>{
+    if(fBroker && r.broker_name!==fBroker) return false;
+    if(fAccount && r.account_number!==fAccount) return false;
+    if(fSymbol && !r.symbol.toLowerCase().includes(fSymbol.toLowerCase())) return false;
+    if(fFrom && r.close_time < fFrom) return false;
+    if(fTo && r.close_time > fTo+"T23:59:59") return false;
+    return true;
+  }),[logs,fBroker,fAccount,fSymbol,fFrom,fTo]);
+  const totalRebate=useMemo(()=> filtered.reduce((s,r)=>s+(Number(r.client_rebate)||0),0),[filtered]);
+  const volumeMonth=useMemo(()=>{
+    const now=new Date(); const ym=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}`;
+    return logs.filter(r=> r.close_time?.slice(0,7)===ym).reduce((s,r)=>s+Number(r.volume_lots||0),0);
+  },[logs]);
+  const brokers=[...new Set(logs.map(r=>r.broker_name).filter(Boolean))] as string[];
+  function exportCsv(){
+    const csv=toCsv(filtered);
+    const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"}); const url=URL.createObjectURL(blob);
+    const a=document.createElement("a"); a.href=url; a.download=`rebate-${Date.now()}.csv`; a.click(); URL.revokeObjectURL(url);
   }
   async function logout(){ await supabase.auth.signOut(); router.push("/login"); }
+  const bal=initialBalance;
   return (
-    <div className="flex-1 max-w-3xl mx-auto w-full p-4 flex flex-col gap-6">
-      <header className="flex justify-between items-center">
-        <b className="text-emerald-600 text-xl">SplitBudget</b>
-        <div className="flex items-center gap-2">
-          <ThemeToggle />
-          <Link href="/profile" className="text-sm border rounded-full px-3 py-1.5 bg-white dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-100">Profil</Link>
-          <span className="text-sm text-zinc-600 dark:text-zinc-400 hidden sm:block">{user.email}</span>
-          <button onClick={logout} className="text-sm border rounded-full px-3 py-1.5 bg-white dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-100">Keluar</button>
+    <div className="flex flex-col gap-6">
+      <div className="flex justify-between items-center">
+        <h1 className="text-xl font-bold dark:text-white">Dashboard</h1>
+        <div className="flex gap-2 items-center"><span className="text-xs text-zinc-500 dark:text-zinc-400 hidden sm:block">{user.email}</span><button onClick={logout} className="text-sm border rounded-full px-3 py-1.5 min-h-[44px] bg-white dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-100">Keluar</button></div>
+      </div>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="bg-white dark:bg-zinc-800 rounded-2xl p-4 border dark:border-zinc-700"><p className="text-xs text-zinc-500 dark:text-zinc-400">Available Balance</p><p className="text-xl font-bold text-sky-600">${Number(bal?.available_balance ?? 0).toFixed(2)}</p></div>
+        <div className="bg-white dark:bg-zinc-800 rounded-2xl p-4 border dark:border-zinc-700"><p className="text-xs text-zinc-500 dark:text-zinc-400">Total Lifetime Rebate</p><p className="text-xl font-bold dark:text-white">${Number(bal?.total_earned ?? totalRebate).toFixed(2)}</p></div>
+        <div className="bg-white dark:bg-zinc-800 rounded-2xl p-4 border dark:border-zinc-700"><p className="text-xs text-zinc-500 dark:text-zinc-400">Total Withdrawn</p><p className="text-xl font-bold dark:text-white">${Number(bal?.total_withdrawn ?? 0).toFixed(2)}</p></div>
+        <div className="bg-white dark:bg-zinc-800 rounded-2xl p-4 border dark:border-zinc-700"><p className="text-xs text-zinc-500 dark:text-zinc-400">Volume Bulan Ini</p><p className="text-xl font-bold dark:text-white">{volumeMonth.toFixed(2)} lot</p></div>
+      </div>
+      <div className="bg-white dark:bg-zinc-800 rounded-2xl p-4 border dark:border-zinc-700 flex flex-wrap gap-2">
+        <select value={fBroker} onChange={e=>setFBroker(e.target.value)} className="border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 rounded-xl px-3 py-2 text-[16px] min-h-[44px]"><option value="">Semua broker</option>{brokers.map(b=><option key={b} value={b}>{b}</option>)}</select>
+        <select value={fAccount} onChange={e=>setFAccount(e.target.value)} className="border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 rounded-xl px-3 py-2 text-[16px] min-h-[44px]"><option value="">Semua akun</option>{accounts.map(a=><option key={a.id} value={a.account_number}>{a.broker_name} {a.account_number}</option>)}</select>
+        <input value={fSymbol} onChange={e=>setFSymbol(e.target.value)} placeholder="Symbol (XAUUSD)" className="border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 rounded-xl px-3 py-2 text-[16px] min-h-[44px] w-32" />
+        <input type="date" value={fFrom} onChange={e=>setFFrom(e.target.value)} className="border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 rounded-xl px-3 py-2 text-[16px] min-h-[44px]" />
+        <input type="date" value={fTo} onChange={e=>setFTo(e.target.value)} className="border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 rounded-xl px-3 py-2 text-[16px] min-h-[44px]" />
+        <button onClick={exportCsv} className="ml-auto bg-sky-600 text-white rounded-xl px-4 min-h-[44px] text-sm font-medium">Export CSV</button>
+      </div>
+      <div className="bg-white dark:bg-zinc-800 rounded-2xl border dark:border-zinc-700 overflow-hidden">
+        <div className="px-4 py-3 border-b dark:border-zinc-700 flex justify-between items-center"><b className="dark:text-white text-sm">Rincian Rebate ({filtered.length})</b><span className="text-xs text-zinc-500">Total: ${totalRebate.toFixed(2)}</span></div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="text-xs text-zinc-500 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-900/50"><tr><th className="text-left px-3 py-2">close_time</th><th className="text-left px-3 py-2">broker</th><th className="text-left px-3 py-2">account</th><th className="text-left px-3 py-2">ticket</th><th className="text-left px-3 py-2">symbol</th><th className="text-right px-3 py-2">vol</th><th className="text-right px-3 py-2">rebate</th><th className="text-left px-3 py-2">status</th></tr></thead>
+            <tbody>
+              {filtered.length===0 ? <tr><td colSpan={8} className="text-center py-8 text-zinc-500">Belum ada data</td></tr> : filtered.slice(0,500).map(r=>(
+                <tr key={r.id} className="border-t dark:border-zinc-700"><td className="px-3 py-2 whitespace-nowrap">{r.close_time?.slice(0,19).replace("T"," ")}</td><td className="px-3 py-2">{r.broker_name ?? "-"}</td><td className="px-3 py-2">{r.account_number ?? "-"}</td><td className="px-3 py-2 font-mono text-xs">{r.ticket_id}</td><td className="px-3 py-2">{r.symbol}</td><td className="px-3 py-2 text-right">{Number(r.volume_lots).toFixed(2)}</td><td className="px-3 py-2 text-right">${Number(r.client_rebate).toFixed(2)}</td><td className="px-3 py-2"><span className="text-xs px-2 py-1 rounded-full bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300">{r.status}</span></td></tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-      </header>
-
-      <div className="bg-white dark:bg-zinc-800 rounded-3xl p-5 border dark:border-zinc-700 shadow-sm">
-        <h2 className="font-bold dark:text-white">Buat Grup Baru</h2>
-        <form onSubmit={createGroup} className="mt-3 flex gap-2">
-          <input value={name} onChange={e=>setName(e.target.value)} placeholder="Nama trip, ex: Bali 2026" className="flex-1 border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white placeholder:text-zinc-400 rounded-xl px-4 py-3 text-[16px]" />
-          <button disabled={loading} className="bg-emerald-600 text-white rounded-xl px-5 font-medium disabled:opacity-50">Buat</button>
-        </form>
-      </div>
-
-      <div className="bg-white dark:bg-zinc-800 rounded-3xl p-5 border dark:border-zinc-700 shadow-sm">
-        <h2 className="font-bold dark:text-white">Gabung via Kode</h2>
-        <form onSubmit={joinGroup} className="mt-3 flex gap-2">
-          <input value={joinCode} onChange={e=>setJoinCode(e.target.value.toUpperCase())} placeholder="Kode ex: A7K9PQ" className="flex-1 border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white placeholder:text-zinc-400 rounded-xl px-4 py-3 text-[16px] uppercase tracking-widest" />
-          <button disabled={loading} className="bg-zinc-900 dark:bg-zinc-700 text-white rounded-xl px-5 font-medium disabled:opacity-50">Gabung</button>
-        </form>
-        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2">Atau buka link: <code className="bg-zinc-100 dark:bg-zinc-700 dark:text-zinc-200 px-1 rounded">/join/KODE</code></p>
-      </div>
-
-      {msg && <p className="text-sm text-center text-red-600 bg-red-50 dark:bg-red-900/30 rounded-xl px-3 py-2">{msg}</p>}
-
-      <div>
-        <h2 className="font-bold mb-3 dark:text-white">Grup Kamu ({groups.length})</h2>
-        {groups.length===0 ? <p className="text-sm text-zinc-500 dark:text-zinc-400 bg-white dark:bg-zinc-800 rounded-2xl p-6 border dark:border-zinc-700 text-center">Belum ada grup. Buat atau gabung di atas.</p> :
-        <div className="grid gap-3">
-          {groups.map((g:any)=>(
-            <Link key={g.id} href={`/groups/${g.id}`} className="bg-white dark:bg-zinc-800 rounded-2xl p-4 border dark:border-zinc-700 flex justify-between items-center hover:shadow dark:hover:bg-zinc-700/50">
-              <div><p className="font-semibold dark:text-white">{g.name}</p><p className="text-xs text-zinc-500 dark:text-zinc-400">Kode: {g.invite_code} • {new Date(g.created_at).toLocaleDateString("id-ID")}</p></div>
-              <span className="text-emerald-600 text-sm font-medium">Buka →</span>
-            </Link>
-          ))}
-        </div>}
       </div>
     </div>
   )

@@ -10,6 +10,12 @@ export async function updateSession(request: NextRequest) {
       setAll(cookiesToSet) { cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value)); cookiesToSet.forEach(({ name, value, options }) => response.cookies.set(name, value, options)); },
     },
   });
-  await supabase.auth.getUser();
+  const { data: { user } } = await supabase.auth.getUser();
+  const path = request.nextUrl.pathname;
+  const isProtected = ["/dashboard","/accounts","/admin"].some(p => path===p || path.startsWith(p+"/"));
+  if(isProtected && !user){
+    const url2 = request.nextUrl.clone(); url2.pathname="/login"; url2.searchParams.set("next", path);
+    return NextResponse.redirect(url2);
+  }
   return response;
 }
