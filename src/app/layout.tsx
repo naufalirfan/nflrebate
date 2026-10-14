@@ -15,7 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="id" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`} suppressHydrationWarning>
       <head><script dangerouslySetInnerHTML={{ __html: themeScript }} /></head>
-      <body className="min-h-full flex flex-col text-zinc-900 dark:text-zinc-100">
+      <body className="min-h-full flex flex-col text-zinc-900 dark:text-white">
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

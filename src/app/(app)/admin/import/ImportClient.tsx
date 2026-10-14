@@ -75,24 +75,24 @@ export default function ImportClient({ accounts, rules, user }:{ accounts:Acc[];
   return (
     <div className="flex flex-col gap-6">
       <h1 className="text-xl font-bold dark:text-white">Import CSV (Admin)</h1>
-      <div className="bg-white dark:bg-zinc-800 rounded-2xl p-5 border dark:border-zinc-700 flex flex-col gap-3">
+      <div className="bg-white dark:bg-[#2a2a30] rounded-2xl p-5 border dark:border-[#34343e] flex flex-col gap-3">
         <label className="flex flex-col gap-1"><span className="text-xs text-zinc-500 dark:text-zinc-400">Akun tujuan</span>
-          <select value={accId} onChange={e=>setAccId(e.target.value)} className="border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 rounded-xl px-4 py-3 text-[16px] min-h-[44px]">
+          <select value={accId} onChange={e=>setAccId(e.target.value)} className="border border-zinc-200 dark:border-[#34343e] bg-white dark:bg-[#1e1e24] rounded-xl px-4 py-3 text-[16px] min-h-[44px]">
             {accounts.length===0? <option value="">(belum ada akun — tautkan dulu)</option> : accounts.map(a=><option key={a.id} value={a.id}>{a.broker_name} {a.account_number} ({a.account_type})</option>)}
           </select>
         </label>
         <label className="flex flex-col gap-1"><span className="text-xs text-zinc-500 dark:text-zinc-400">Upload CSV</span>
-          <input type="file" accept=".csv" onChange={onFile} className="border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 rounded-xl px-4 py-3 text-[16px] min-h-[44px]" />
+          <input type="file" accept=".csv" onChange={onFile} className="border border-zinc-200 dark:border-[#34343e] bg-white dark:bg-[#1e1e24] rounded-xl px-4 py-3 text-[16px] min-h-[44px]" />
         </label>
-        <textarea value={text} onChange={e=>setText(e.target.value)} rows={8} className="w-full border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 rounded-xl px-4 py-3 text-[13px] font-mono" placeholder="ticket_id,symbol,volume_lots,close_time" />
+        <textarea value={text} onChange={e=>setText(e.target.value)} rows={8} className="w-full border border-zinc-200 dark:border-[#34343e] bg-white dark:bg-[#1e1e24] rounded-xl px-4 py-3 text-[13px] font-mono" placeholder="ticket_id,symbol,volume_lots,close_time" />
         {msg && <p className="text-sm bg-sky-50 dark:bg-sky-900/30 text-sky-700 dark:text-sky-300 rounded-xl px-3 py-2">{msg} {ok>0?`(${ok} ok)`: ""}</p>}
         <button onClick={doImport} disabled={loading} className="bg-sky-600 text-white rounded-xl py-3 min-h-[44px] font-medium disabled:opacity-50">{loading?"Importing...":"Import"}</button>
         <p className="text-xs text-zinc-500 dark:text-zinc-400">Rate = rebate_rules.rate_per_lot × volume_lots. Idempotent pada ticket_id (unique). Saldo user_balances otomatis ter-update.</p>
       </div>
       {dlq.length>0 && (
-        <div className="bg-white dark:bg-zinc-800 rounded-2xl border dark:border-zinc-700 overflow-hidden">
-          <div className="px-4 py-3 border-b dark:border-zinc-700"><b className="text-sm dark:text-white">DLQ — {dlq.length} baris gagal</b></div>
-          <div className="overflow-x-auto"><table className="w-full text-xs"><thead className="text-zinc-500 bg-zinc-50 dark:bg-zinc-900/50"><tr><th className="text-left px-3 py-2">baris</th><th className="text-left px-3 py-2">alasan</th><th className="text-left px-3 py-2">data</th></tr></thead><tbody>{dlq.map((d,i)=><tr key={i} className="border-t dark:border-zinc-700"><td className="px-3 py-2">{d.row}</td><td className="px-3 py-2 text-red-600 dark:text-red-400">{d.reason}</td><td className="px-3 py-2 font-mono">{JSON.stringify(d.data)}</td></tr>)}</tbody></table></div>
+        <div className="bg-white dark:bg-[#2a2a30] rounded-2xl border dark:border-[#34343e] overflow-hidden">
+          <div className="px-4 py-3 border-b dark:border-[#34343e]"><b className="text-sm dark:text-white">DLQ — {dlq.length} baris gagal</b></div>
+          <div className="overflow-x-auto"><table className="w-full text-xs"><thead className="text-zinc-500 bg-zinc-50 dark:bg-[#1e1e24]/50"><tr><th className="text-left px-3 py-2">baris</th><th className="text-left px-3 py-2">alasan</th><th className="text-left px-3 py-2">data</th></tr></thead><tbody>{dlq.map((d,i)=><tr key={i} className="border-t dark:border-[#34343e]"><td className="px-3 py-2">{d.row}</td><td className="px-3 py-2 text-red-600 dark:text-red-400">{d.reason}</td><td className="px-3 py-2 font-mono">{JSON.stringify(d.data)}</td></tr>)}</tbody></table></div>
         </div>
       )}
     </div>

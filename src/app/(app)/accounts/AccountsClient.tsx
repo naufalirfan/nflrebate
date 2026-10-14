@@ -23,23 +23,23 @@ export default function AccountsClient({ user, initialAccounts }:{ user:any; ini
   return (
     <div className="flex flex-col gap-6">
       <h1 className="text-xl font-bold dark:text-white">Akun Broker</h1>
-      <form onSubmit={submit} className="bg-white dark:bg-zinc-800 rounded-2xl p-5 border dark:border-zinc-700 flex flex-col gap-3">
+      <form onSubmit={submit} className="bg-white dark:bg-[#2a2a30] rounded-2xl p-5 border dark:border-[#34343e] flex flex-col gap-3">
         <h2 className="font-semibold dark:text-white">Tautkan Akun</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <label className="flex flex-col gap-1"><span className="text-xs text-zinc-500 dark:text-zinc-400">Broker</span>
-            <select value={broker} onChange={e=>setBroker(e.target.value)} className="border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 rounded-xl px-4 py-3 text-[16px] min-h-[44px]">{BROKERS.map(b=><option key={b} value={b}>{b}</option>)}</select>
+            <select value={broker} onChange={e=>setBroker(e.target.value)} className="border border-zinc-200 dark:border-[#34343e] bg-white dark:bg-[#1e1e24] rounded-xl px-4 py-3 text-[16px] min-h-[44px]">{BROKERS.map(b=><option key={b} value={b}>{b}</option>)}</select>
           </label>
           <label className="flex flex-col gap-1"><span className="text-xs text-zinc-500 dark:text-zinc-400">Tipe Akun</span>
-            <select value={atype} onChange={e=>setAtype(e.target.value)} className="border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 rounded-xl px-4 py-3 text-[16px] min-h-[44px]">{TYPES.map(t=><option key={t} value={t}>{t}</option>)}</select>
+            <select value={atype} onChange={e=>setAtype(e.target.value)} className="border border-zinc-200 dark:border-[#34343e] bg-white dark:bg-[#1e1e24] rounded-xl px-4 py-3 text-[16px] min-h-[44px]">{TYPES.map(t=><option key={t} value={t}>{t}</option>)}</select>
           </label>
         </div>
-        <input value={accNo} onChange={e=>setAccNo(e.target.value)} placeholder="Nomor akun (ex: 12345678)" required className="w-full border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 rounded-xl px-4 py-3 text-[16px] min-h-[44px]" />
-        <input value={server} onChange={e=>setServer(e.target.value)} placeholder="Server (opsional, ex: Exness-Real)" className="w-full border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 rounded-xl px-4 py-3 text-[16px] min-h-[44px]" />
+        <input value={accNo} onChange={e=>setAccNo(e.target.value)} placeholder="Nomor akun (ex: 12345678)" required className="w-full border border-zinc-200 dark:border-[#34343e] bg-white dark:bg-[#1e1e24] rounded-xl px-4 py-3 text-[16px] min-h-[44px]" />
+        <input value={server} onChange={e=>setServer(e.target.value)} placeholder="Server (opsional, ex: Exness-Real)" className="w-full border border-zinc-200 dark:border-[#34343e] bg-white dark:bg-[#1e1e24] rounded-xl px-4 py-3 text-[16px] min-h-[44px]" />
         {msg && <p className="text-sm text-sky-700 dark:text-sky-300 bg-sky-50 dark:bg-sky-900/30 rounded-xl px-3 py-2">{msg}</p>}
         <button disabled={loading} className="bg-sky-600 text-white rounded-xl py-3 min-h-[44px] font-medium disabled:opacity-50">{loading?"Menyimpan...":"Tautkan"}</button>
       </form>
-      <div className="bg-white dark:bg-zinc-800 rounded-2xl border dark:border-zinc-700 overflow-hidden">
-        <div className="px-4 py-3 border-b dark:border-zinc-700"><b className="text-sm dark:text-white">Akun Anda ({accounts.length})</b></div>
+      <div className="bg-white dark:bg-[#2a2a30] rounded-2xl border dark:border-[#34343e] overflow-hidden">
+        <div className="px-4 py-3 border-b dark:border-[#34343e]"><b className="text-sm dark:text-white">Akun Anda ({accounts.length})</b></div>
         {accounts.length===0 ? <p className="p-6 text-center text-sm text-zinc-500">Belum ada akun tertaut</p> :
           <div className="divide-y dark:divide-zinc-700">
             {accounts.map(a=>(
