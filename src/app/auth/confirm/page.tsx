@@ -54,7 +54,7 @@ function ConfirmInner() {
           <Link href="/login" className="text-emerald-600 font-medium">Sudah verifikasi? Masuk</Link>
           <Link href="/register" className="text-zinc-500 dark:text-zinc-400">Ganti email / daftar ulang</Link>
         </div>
-        <p className="text-[11px] text-zinc-400 dark:text-zinc-500">Jika localhost error: ganti Site URL di Supabase Dashboard → Authentication → URL Configuration → Site URL = https://splitbudget-two.vercel.app</p>
+        <p className="text-[11px] text-zinc-400 dark:text-zinc-500">Jika localhost error: ganti Site URL di Supabase Dashboard → Authentication → URL Configuration → Site URL = https://nflrebate.vercel.app</p>
       </div>
     </div>
   );

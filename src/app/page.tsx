@@ -7,18 +7,18 @@ export default function Home(){
         <b className="text-black dark:text-white text-[20px] font-bold tracking-[-0.14px]" style={{fontFeatureSettings:'"kern" 1'}}>Nfl Rebate</b>
         <div className="flex gap-2 items-center">
           <ThemeToggle />
-          <Link href="/login" className="px-5 py-2 min-h-[44px] inline-flex items-center text-[14px] font-medium tracking-[-0.10px] border border-[#e6e6e6] rounded-[50px] bg-white text-black">Masuk</Link>
-          <Link href="/register" className="px-5 py-2 min-h-[44px] inline-flex items-center text-[14px] font-medium tracking-[-0.10px] bg-black text-white rounded-[50px]">Daftar</Link>
+          <Link href="/login" className="px-5 py-2 min-h-[44px] inline-flex items-center text-[14px] font-medium tracking-[-0.10px] border border-[#e6e6e6] dark:border-[#34343e] rounded-[50px] bg-white text-black">Masuk</Link>
+          <Link href="/register" className="px-5 py-2 min-h-[44px] inline-flex items-center text-[14px] font-medium tracking-[-0.10px] bg-black dark:bg-white text-white dark:text-black border border-transparent dark:border-white rounded-[50px]">Daftar</Link>
         </div>
       </nav>
       <main className="flex-1 w-full max-w-5xl px-4 py-8 flex flex-col gap-8">
         <div className="rounded-[24px] bg-white dark:bg-[#2a2a30] border border-[#e6e6e6] dark:border-[#34343e] p-8 shadow-[0_1px_2px_rgba(0,0,0,.04)]">
-          <p className="text-[12px] font-mono uppercase tracking-[0.6px] text-black/60">Rebate forex • Exness • XM • Headway</p>
-          <h1 className="mt-2 text-[40px] md:text-[48px] font-[340] leading-[1.05] tracking-[-0.96px] text-black" style={{fontFeatureSettings:'"kern" 1'}}>Rebate forex anda<br/>terpantau transparan.</h1>
-          <p className="mt-4 text-[18px] leading-[1.45] tracking-[-0.26px] text-black/70 max-w-[48ch]">Portal rebate — tautkan akun, pantau komisi per lot, tarik kapan saja. Chrome monochrome, cerita di color-block.</p>
+          <p className="text-[12px] font-mono uppercase tracking-[0.6px] text-black/60 dark:text-white/60">Rebate forex • Exness • XM • Headway</p>
+          <h1 className="mt-2 text-[40px] md:text-[48px] font-[340] leading-[1.05] tracking-[-0.96px] text-black dark:text-white" style={{fontFeatureSettings:'"kern" 1'}}>Rebate forex anda<br/>terpantau transparan.</h1>
+          <p className="mt-4 text-[18px] leading-[1.45] tracking-[-0.26px] text-black/70 dark:text-white/70 max-w-[48ch]">Portal rebate — tautkan akun, pantau komisi per lot, tarik kapan saja. Chrome monochrome, cerita di color-block.</p>
           <div className="mt-6 flex gap-3">
-            <Link href="/register" className="px-6 py-3 min-h-[44px] inline-flex items-center bg-black text-white rounded-[50px] text-[16px] font-medium tracking-[-0.10px]">Daftar</Link>
-            <Link href="/login" className="px-6 py-3 min-h-[44px] inline-flex items-center bg-white text-black border border-[#e6e6e6] rounded-[50px] text-[16px] font-medium tracking-[-0.10px]">Masuk</Link>
+            <Link href="/register" className="px-6 py-3 min-h-[44px] inline-flex items-center bg-black dark:bg-white text-white dark:text-black border border-transparent dark:border-white rounded-[50px] text-[16px] font-medium tracking-[-0.10px]">Daftar</Link>
+            <Link href="/login" className="px-6 py-3 min-h-[44px] inline-flex items-center bg-white dark:bg-transparent text-black dark:text-white border border-[#e6e6e6] dark:border-[#34343e] rounded-[50px] text-[16px] font-medium tracking-[-0.10px]">Masuk</Link>
           </div>
         </div>
         <div className="rounded-[24px] p-8 flex flex-col gap-4" style={{background:"#dceeb1"}}>
@@ -38,7 +38,7 @@ export default function Home(){
             <div className="bg-white border border-[#e6e6e6] rounded-[8px] p-5 text-center"><p className="text-2xl font-bold text-black">T+1</p><p className="text-xs tracking-[0.54px] font-mono uppercase text-black/60">Pencairan</p></div>
           </div>
         </div>
-        <p className="text-xs tracking-[0.6px] font-mono uppercase text-black/40 text-center">PWA • Mobile First • Supabase • Rebate harian otomatis</p>
+        <p className="text-xs tracking-[0.6px] font-mono uppercase text-black/40 dark:text-white/40 text-center">PWA • Mobile First • Supabase • Rebate harian otomatis</p>
       </main>
     </div>
   )
