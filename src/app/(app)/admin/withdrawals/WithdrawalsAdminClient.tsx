@@ -89,26 +89,26 @@ export default function WithdrawalsAdminClient({ user, pending: initialPending, 
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="font-semibold text-[22px] leading-[1.2] tracking-[-0.2px]" style={{ color: "#1d1d1f", fontFamily: "SF Pro Display, system-ui, -apple-system, sans-serif" }}>Withdrawals • Admin</h1>
-        <p className="text-[14px] tracking-[-0.224px]" style={{ color: "#7a7a7a" }}>{pending.length} pending · aksi via Supabase RLS (admin)</p>
+        <h1 className="font-semibold text-[22px] leading-[1.2] tracking-[-0.2px]" style={{ color: "#000000", fontFamily: "Inter, system-ui, sans-serif" }}>Withdrawals • Admin</h1>
+        <p className="text-[14px] tracking-[-0.14px]" style={{ color: "#7a7a7a" }}>{pending.length} pending · aksi via Supabase RLS (admin)</p>
       </div>
-      {msg && <p className="rounded-[11px] px-3 py-2 text-[14px] tracking-[-0.224px]" style={{ color: "#1d1d1f", background: "#f5f5f7", border: "1px solid #e0e0e0" }}>{msg}</p>}
+      {msg && <p className="rounded-[8px] px-3 py-2 text-[14px] tracking-[-0.14px]" style={{ color: "#000000", background: "#ffffff", border: "1px solid #e6e6e6" }}>{msg}</p>}
 
-      <div className="rounded-[18px] overflow-hidden" style={{ background: "#fafafc", border: "1px solid #e0e0e0" }}>
-        <div className="px-4 py-3" style={{ borderBottom: "1px solid #e0e0e0" }}>
-          <span className="font-semibold text-[14px] tracking-[-0.224px]" style={{ color: "#1d1d1f" }}>Pending</span>
+      <div className="rounded-[24px] overflow-hidden" style={{ background: "#f7f7f5", border: "1px solid #e6e6e6" }}>
+        <div className="px-4 py-3" style={{ borderBottom: "1px solid #e6e6e6" }}>
+          <span className="font-semibold text-[14px] tracking-[-0.14px]" style={{ color: "#000000" }}>Pending</span>
         </div>
         <div className="overflow-auto max-w-full">
           <table className="w-full text-[14px]">
-            <thead className="text-[12px] tracking-[-0.12px]" style={{ color: "#7a7a7a", background: "#fff" }}>
+            <thead className="text-[12px] tracking-[0.54px]" style={{ color: "#7a7a7a", background: "#fff" }}>
               <tr><th className="text-left px-3 py-2">Tanggal</th><th className="text-left px-3 py-2">User</th><th className="text-right px-3 py-2">USD</th><th className="text-right px-3 py-2">IDR</th><th className="text-left px-3 py-2">Channel</th><th className="text-left px-3 py-2">Tujuan</th><th className="text-left px-3 py-2">Aksi</th></tr>
             </thead>
             <tbody>
               {pending.length === 0 ? <tr><td colSpan={7} className="text-center py-8" style={{ color: "#7a7a7a" }}>Tidak ada pending</td></tr>
                 : pending.map(r => (
-                  <tr key={r.id} style={{ borderTop: "1px solid #e0e0e0" }}>
+                  <tr key={r.id} style={{ borderTop: "1px solid #e6e6e6" }}>
                     <td className="px-3 py-2 whitespace-nowrap text-[12px]">{new Date(r.created_at).toLocaleString("id-ID")}</td>
-                    <td className="px-3 py-2 text-[12px] whitespace-nowrap" style={{ color: "#1d1d1f" }}>{(r.profiles as unknown as { email: string } | null)?.email ?? r.user_id.slice(0, 8)}</td>
+                    <td className="px-3 py-2 text-[12px] whitespace-nowrap" style={{ color: "#000000" }}>{(r.profiles as unknown as { email: string } | null)?.email ?? r.user_id.slice(0, 8)}</td>
                     <td className="px-3 py-2 text-right">${Number(r.amount_usd).toFixed(2)}</td>
                     <td className="px-3 py-2 text-right">Rp{Number(r.amount_idr).toLocaleString("id-ID")}</td>
                     <td className="px-3 py-2">{r.channel}</td>
@@ -116,7 +116,7 @@ export default function WithdrawalsAdminClient({ user, pending: initialPending, 
                     <td className="px-3 py-2">
                       <div className="flex gap-2">
                         <button disabled={!!busy} onClick={() => approve(r.id)} className="px-3 min-h-[44px] text-[14px] disabled:opacity-50 text-white" style={{ background: "#0066cc", borderRadius: 9999 }}>{busy === r.id ? "…" : "Approve"}</button>
-                        <button disabled={!!busy} onClick={() => reject(r.id)} className="px-3 min-h-[44px] text-[14px] disabled:opacity-50" style={{ background: "#fff", border: "1px solid #e0e0e0", borderRadius: 9999, color: "#1d1d1f" }}>{busy === r.id ? "…" : "Reject"}</button>
+                        <button disabled={!!busy} onClick={() => reject(r.id)} className="px-3 min-h-[44px] text-[14px] disabled:opacity-50" style={{ background: "#fff", border: "1px solid #e6e6e6", borderRadius: 9999, color: "#000000" }}>{busy === r.id ? "…" : "Reject"}</button>
                       </div>
                     </td>
                   </tr>
@@ -126,18 +126,18 @@ export default function WithdrawalsAdminClient({ user, pending: initialPending, 
         </div>
       </div>
 
-      <div className="rounded-[18px] overflow-hidden" style={{ background: "#fafafc", border: "1px solid #e0e0e0" }}>
-        <div className="px-4 py-3" style={{ borderBottom: "1px solid #e0e0e0" }}>
-          <span className="font-semibold text-[14px] tracking-[-0.224px]" style={{ color: "#1d1d1f" }}>Riwayat terbaru (50)</span>
+      <div className="rounded-[24px] overflow-hidden" style={{ background: "#f7f7f5", border: "1px solid #e6e6e6" }}>
+        <div className="px-4 py-3" style={{ borderBottom: "1px solid #e6e6e6" }}>
+          <span className="font-semibold text-[14px] tracking-[-0.14px]" style={{ color: "#000000" }}>Riwayat terbaru (50)</span>
         </div>
         <div className="overflow-auto max-w-full">
           <table className="w-full text-[14px]">
-            <thead className="text-[12px] tracking-[-0.12px]" style={{ color: "#7a7a7a", background: "#fff" }}>
+            <thead className="text-[12px] tracking-[0.54px]" style={{ color: "#7a7a7a", background: "#fff" }}>
               <tr><th className="text-left px-3 py-2">Tanggal</th><th className="text-right px-3 py-2">USD</th><th className="text-left px-3 py-2">Status</th></tr>
             </thead>
             <tbody>
               {recent.map(r => (
-                <tr key={r.id} style={{ borderTop: "1px solid #e0e0e0" }}><td className="px-3 py-2 whitespace-nowrap text-[12px]">{new Date(r.created_at).toLocaleString("id-ID")}</td><td className="px-3 py-2 text-right">${Number(r.amount_usd).toFixed(2)}</td><td className="px-3 py-2"><span className="text-[12px] px-2 py-1 rounded-full" style={{ background: r.status === "pending" ? "#fff7e6" : r.status === "approved" || r.status === "completed" ? "#e6f4ea" : "#fde8e8", color: r.status === "pending" ? "#9a6700" : r.status === "approved" ? "#1a7f37" : "#cf222e" }}>{r.status}</span></td></tr>
+                <tr key={r.id} style={{ borderTop: "1px solid #e6e6e6" }}><td className="px-3 py-2 whitespace-nowrap text-[12px]">{new Date(r.created_at).toLocaleString("id-ID")}</td><td className="px-3 py-2 text-right">${Number(r.amount_usd).toFixed(2)}</td><td className="px-3 py-2"><span className="text-[12px] px-2 py-1 rounded-full" style={{ background: r.status === "pending" ? "#fff7e6" : r.status === "approved" || r.status === "completed" ? "#e6f4ea" : "#fde8e8", color: r.status === "pending" ? "#9a6700" : r.status === "approved" ? "#1a7f37" : "#cf222e" }}>{r.status}</span></td></tr>
               ))}
             </tbody>
           </table>
