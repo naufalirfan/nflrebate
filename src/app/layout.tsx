@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: "Portal rebate Exness, XM, dan Headway — pantau komisi lot anda real-time.",
   manifest: "/manifest.json",
 };
-export const viewport: Viewport = { themeColor: "#ffffff" };
+export const viewport: Viewport = { themeColor: "#f7f7f5" };
 const themeScript = `try{var t=localStorage.getItem("theme");var m=window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";var r=t==="system"||!t?m:t;document.documentElement.classList.add(r)}catch(e){};try{var h=window.location.hash;if(h&&h.indexOf("access_token")>-1){var r2=(h.indexOf("type=recovery")>-1)?"/reset-password":"/dashboard";if(window.location.pathname==="/"||window.location.pathname==="/login"||window.location.pathname==="/register"){window.location.replace(r2+h)}};}catch(e2){}`;
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

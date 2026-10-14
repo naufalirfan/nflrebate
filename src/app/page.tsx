@@ -1,16 +1,18 @@
 import Link from "next/link";
+import { ThemeToggle } from "@/components/ThemeToggle";
 export default function Home(){
   return (
-    <div className="flex-1 flex flex-col items-center bg-white">
-      <nav className="w-full max-w-5xl flex justify-between items-center h-[56px] px-4 bg-white border-b border-[#e6e6e6] sticky top-0 z-10">
-        <b className="text-black text-[20px] font-bold tracking-[-0.14px]" style={{fontFeatureSettings:'"kern" 1'}}>Nfl Rebate</b>
+    <div className="flex-1 flex flex-col items-center bg-[#f7f7f5] dark:bg-[#0a0a0a]">
+      <nav className="w-full max-w-5xl flex justify-between items-center h-[56px] px-4 bg-[#f7f7f5] dark:bg-[#0a0a0a] border-b border-[#e6e6e6] dark:border-[#2a2a2a] sticky top-0 z-10">
+        <b className="text-black dark:text-white text-[20px] font-bold tracking-[-0.14px]" style={{fontFeatureSettings:'"kern" 1'}}>Nfl Rebate</b>
         <div className="flex gap-2 items-center">
+          <ThemeToggle />
           <Link href="/login" className="px-5 py-2 min-h-[44px] inline-flex items-center text-[14px] font-medium tracking-[-0.10px] border border-[#e6e6e6] rounded-[50px] bg-white text-black">Masuk</Link>
           <Link href="/register" className="px-5 py-2 min-h-[44px] inline-flex items-center text-[14px] font-medium tracking-[-0.10px] bg-black text-white rounded-[50px]">Daftar</Link>
         </div>
       </nav>
       <main className="flex-1 w-full max-w-5xl px-4 py-8 flex flex-col gap-8">
-        <div className="rounded-[24px] bg-white border border-[#e6e6e6] p-8 shadow-[0_1px_2px_rgba(0,0,0,.04)]">
+        <div className="rounded-[24px] bg-white dark:bg-[#141414] border border-[#e6e6e6] dark:border-[#2a2a2a] p-8 shadow-[0_1px_2px_rgba(0,0,0,.04)]">
           <p className="text-[12px] font-mono uppercase tracking-[0.6px] text-black/60">Rebate forex • Exness • XM • Headway</p>
           <h1 className="mt-2 text-[40px] md:text-[48px] font-[340] leading-[1.05] tracking-[-0.96px] text-black" style={{fontFeatureSettings:'"kern" 1'}}>Rebate forex anda<br/>terpantau transparan.</h1>
           <p className="mt-4 text-[18px] leading-[1.45] tracking-[-0.26px] text-black/70 max-w-[48ch]">Portal rebate — tautkan akun, pantau komisi per lot, tarik kapan saja. Chrome monochrome, cerita di color-block.</p>

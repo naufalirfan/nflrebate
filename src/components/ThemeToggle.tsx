@@ -2,18 +2,21 @@
 import { useTheme } from "./ThemeProvider";
 
 export function ThemeToggle() {
-  const { theme, setTheme, resolvedTheme } = useTheme();
-  const next = theme === "light" ? "dark" : theme === "dark" ? "system" : "light";
-  const label = theme === "light" ? "☀️" : theme === "dark" ? "🌙" : "⚙️";
-  const title = theme === "light" ? "Mode siang" : theme === "dark" ? "Mode malam" : "Ikut sistem";
+  const { resolvedTheme, setTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
   return (
     <button
-      onClick={() => setTheme(next as any)}
-      title={`${title} — klik untuk ganti`}
-      className="w-9 h-9 rounded-full border bg-white dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-100 flex items-center justify-center text-sm shrink-0"
-      aria-label="Ganti tema"
+      onClick={() => setTheme(isDark ? "light" : "dark")}
+      title={isDark ? "Mode siang — klik untuk siang" : "Mode malam — klik untuk malam"}
+      aria-label="Ganti tema siang/malam"
+      className="min-h-[44px] min-w-[44px] w-11 h-11 inline-flex items-center justify-center rounded-full border text-[16px] shrink-0"
+      style={{
+        background: isDark ? "#1a1a1a" : "#ffffff",
+        borderColor: isDark ? "#2a2a2a" : "#e6e6e6",
+        color: isDark ? "#ffffff" : "#000000",
+      }}
     >
-      <span>{label}</span>
+      <span aria-hidden>{isDark ? "☀️" : "🌙"}</span>
     </button>
   );
 }
