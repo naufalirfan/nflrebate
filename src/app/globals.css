@@ -1,37 +1,33 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
-
-:root {
-  --background: #fafafa;
-  --foreground: #171717;
-}
-.dark {
-  --background: #0a0a0a;
-  --foreground: #ededed;
-}
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-body { background: var(--background); color: var(--foreground); font-family: Arial, Helvetica, sans-serif; }
-/* pipsbackfx-inspired login */
-.pbfx-wrap{min-height:100dvh;background:#f3f4f6;display:flex;flex-direction:column}
-.pbfx-header{height:56px;background:#0f172a;display:flex;align-items:center;justify-content:space-between;padding:0 20px}
-.pbfx-logo{color:#fff;font-weight:900;letter-spacing:.06em}
-.pbfx-logo span{color:#38bdf8}
-.pbfx-nav{display:flex;gap:16px;align-items:center;color:#94a3b8;font-size:14px}
-.pbfx-nav a{color:#cbd5e1}.pbfx-nav a.active{color:#38bdf8;font-weight:600}
-.pbfx-lang{border:1px solid #334155;border-radius:999px;padding:2px 10px;font-size:12px}
-.pbfx-main{flex:1;display:flex;align-items:center;justify-content:center;padding:24px 16px}
-.pbfx-card{width:100%;max-width:420px;background:#fff;border-radius:16px;padding:28px 24px;box-shadow:0 8px 30px rgba(15,23,42,.08);display:flex;flex-direction:column;gap:12px}
-.pbfx-card h2{font-size:15px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#0f172a;text-align:center;margin-bottom:4px}
-.pbfx-field{display:flex;align-items:center;gap:10px;border:1px solid #e2e8f0;border-radius:999px;padding:0 14px;background:#f8fafc}
-.pbfx-field input{flex:1;border:0;outline:0;background:transparent;padding:13px 0;font-size:16px;color:#0f172a}
-.pbfx-ico{color:#64748b;font-size:14px}
-.pbfx-eye{font-size:12px;color:#0284c7;font-weight:600;white-space:nowrap}
-.pbfx-err{font-size:13px;color:#dc2626;background:#fef2f2;border:1px solid #fecaca;border-radius:12px;padding:10px 12px}
-.pbfx-btn{border-radius:999px;background:linear-gradient(180deg,#0ea5e9,#0284c7);color:#fff;font-weight:700;padding:12px;min-height:44px}
-.pbfx-lost{font-size:13px;color:#0284c7;text-align:center}
-.pbfx-signup{font-size:13px;color:#64748b;text-align:center}.pbfx-signup a{color:#0284c7;font-weight:600}
+:root{--background:#f5f5f7;--foreground:#1d1d1f;--primary:#06c;--primary-focus:#0071e3;--hairline:#e0e0e0}
+.dark{--background:#000;--foreground:#ededed}
+@theme inline{--color-background:var(--background);--color-foreground:var(--foreground);--font-sans:var(--font-geist-sans);--font-mono:var(--font-geist-mono)}
+*{font-variant-ligatures:common-ligatures}
+body{background:var(--background);color:var(--foreground);font-family:"SF Pro Text",system-ui,-apple-system,BlinkMacSystemFont,sans-serif;font-size:17px;line-height:1.47;letter-spacing:-0.374px;-webkit-font-smoothing:antialiased}
+/* focus ring: single Action Blue */
+:focus-visible{outline:2px solid #0071e3;outline-offset:2px}
+/* auth: Apple parchment + pearl, single Action Blue — pipsbackfx shape, Apple tokens */
+.pbfx-wrap{min-height:100dvh;background:#f5f5f7;display:flex;flex-direction:column}
+.pbfx-header{height:44px;background:#000;display:flex;align-items:center;justify-content:space-between;padding:0 20px}
+.pbfx-logo{color:#fff;font-weight:600;letter-spacing:-0.12px;font-family:"SF Pro Display",system-ui,-apple-system,sans-serif}
+.pbfx-logo span{color:#2997ff}
+.pbfx-nav{display:flex;gap:16px;align-items:center;color:#cccccc;font-size:12px;letter-spacing:-0.12px}
+.pbfx-nav a{color:#fff}.pbfx-nav a.active{color:#2997ff;font-weight:400}
+.pbfx-lang{border:1px solid #333;border-radius:9999px;padding:4px 10px;font-size:12px;color:#fff}
+.pbfx-main{flex:1;display:flex;align-items:center;justify-content:center;padding:32px 16px}
+.pbfx-card{width:100%;max-width:420px;background:#fff;border:1px solid #e0e0e0;border-radius:18px;padding:28px 24px;display:flex;flex-direction:column;gap:12px}
+.pbfx-card h2{font-size:17px;font-weight:600;letter-spacing:-0.374px;color:#1d1d1f;text-align:center;margin-bottom:4px;text-transform:none}
+.pbfx-field{display:flex;align-items:center;gap:10px;border:1px solid #e0e0e0;border-radius:9999px;padding:0 14px;background:#fff;height:44px}
+.pbfx-field input{flex:1;border:0;outline:0;background:transparent;padding:0;font-size:17px;letter-spacing:-0.374px;color:#1d1d1f}
+.pbfx-ico{color:#7a7a7a;font-size:14px}
+.pbfx-eye{font-size:14px;color:#06c;font-weight:400;white-space:nowrap}
+.pbfx-err{font-size:14px;letter-spacing:-0.224px;color:#dc2626;background:#fef2f2;border:1px solid #fecaca;border-radius:11px;padding:10px 12px}
+.pbfx-btn{border-radius:9999px;background:#06c;color:#fff;font-weight:400;font-size:17px;letter-spacing:-0.374px;padding:11px 22px;min-height:44px;border:0}
+.pbfx-btn:active{transform:scale(0.95)}
+.pbfx-lost{font-size:14px;letter-spacing:-0.224px;color:#06c;text-align:center}
+.pbfx-signup{font-size:14px;letter-spacing:-0.224px;color:#7a7a7a;text-align:center}.pbfx-signup a{color:#06c;font-weight:400}
+.nfl-card{background:#fff;border:1px solid #e0e0e0;border-radius:18px;padding:24px}
+.nfl-btn{background:#06c;color:#fff;border-radius:9999px;padding:11px 22px;font-size:17px;letter-spacing:-0.374px;min-height:44px;border:0}
+.nfl-btn:active{transform:scale(0.95)}
+.nfl-input{height:44px;border-radius:9999px;border:1px solid #e0e0e0;padding:0 16px;font-size:17px;letter-spacing:-0.374px}
